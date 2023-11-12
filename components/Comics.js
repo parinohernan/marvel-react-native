@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function Comics() {
+export default function Comics(props) {
+    const {comics} = props;
+    console.log(comics);
   return (
     <View>
       <Text>Comics Screen</Text>
