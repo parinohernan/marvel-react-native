@@ -4,8 +4,10 @@ import { View , FlatList, ActivityIndicator } from 'react-native';
 import CharacterCard from './CharacterCard';
 import apiParams from '../config.js';
 import axios from 'axios';
+import { Searchbar } from 'react-native-paper';
 
 export default function Home() {
+  const [search, setSearch] = useState('');
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const { ts, apikey, hash, baseURL } = apiParams;
@@ -25,8 +27,32 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
+  function searchCharacter() {
+    if(search) {
+      setLoading(true);
+      axios.get(`${baseURL}/v1/public/characters`, {
+        params: {
+          ts,
+          apikey,
+          hash,
+          nameStartsWith: search
+        }
+      })
+        .then(response => setData(response.data.data.results))
+        .catch(error => console.error(error))
+        .finally(() => setLoading(false));
+    }
+  }
+  
   return (
     <View>
+    <Searchbar
+      placeholder="Search for character..."
+      onChangeText={value => setSearch(value)}
+      value={search}
+      onIconPress={searchCharacter}
+      onSubmitEditing={searchCharacter}
+    />
     {isLoading 
       ? <ActivityIndicator size="large" color="#00ff00" /> 
       : (

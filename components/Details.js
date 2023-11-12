@@ -144,7 +144,7 @@ export default function Detail({ route }) {
           (isLoading
             ? <ActivityIndicator size="large" color="#00ff00" /> 
             : <Comics 
-                comics={data.comics?.items || []}
+                listComics={data.comics?.items || []}
               />
           )
         }
